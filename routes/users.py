@@ -12,6 +12,10 @@ def add_user():
 def login():
     return user.login()
 
+@app.route("/users/", methods=["GET"])
+def getUsers():
+    return user.getUsers()
+
 
 
 
