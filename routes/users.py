@@ -8,6 +8,18 @@ def add_user():
     return user.add_user()
 
 
+@app.route("/login/", methods=["POST"])
+def login():
+    return user.login()
+
+
+
+
+
+
+
+
+
 
 
 
