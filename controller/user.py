@@ -5,6 +5,7 @@ from flask import Flask, request, jsonify
 from flask_bcrypt import Bcrypt
 from models.user import User
 import jwt
+from middlewares.auth_middleware import token_required
 bcrypt = Bcrypt(app)
 
 def add_user():
@@ -57,20 +58,47 @@ def login():
                     "error": "Unauthorized",                 
                 }), 404
         
+        
+        
         token = jwt.encode(
-                        {"user_id":str(fetched_user.id), "email":fetched_user["email"], "name":fetched_user["name"]},
-                        app.config["SECRET_KEY"],
-                        algorithm="HS256")
+            {
+            "user_id":str(fetched_user.id),
+            "email":fetched_user["email"],
+            "name":fetched_user["name"]
+            },
 
-        return {
-                "message": " Successfully fetched auth token",
-                "token": token,
-                
-                
-            }, 200    
+            app.config["SECRET_KEY"],
+            algorithm="HS256")
+
+        return {"message": " Successfully fetched auth token","token": token}, 200    
+    
     except Exception as e:
         return {
             "message": "Something went wrong",
             "error": str(e),
             "data": None
         }, 500
+
+
+
+def getUsers():
+    try:
+        users =  User.objects()
+        users_count = User.objects.count()
+        return {
+            "users": users,
+            "count": users_count,
+            "message":" users data fetched successfully"
+        },200
+    except Exception as e:
+        return {
+            "message": "Something went wrong",
+            "error": str(e),
+            "data": None
+        }, 500
+
+
+
+
+
+
