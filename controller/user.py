@@ -40,3 +40,37 @@ def add_user():
         }, 500
 
 
+def login():
+    try:
+        record = json.loads(request.data)
+        if not record:
+            return {
+                "message": "No user data ",
+                "data": None,
+                "error": "Bad request"
+            }, 400
+        fetched_user = User.objects(email=record['email']).first()
+        if not fetched_user or not bcrypt.check_password_hash(fetched_user["password"], record["password"]):
+            return jsonify({
+                    "message": "Error fetching auth token!, invalid email or password",
+                    "data": None,
+                    "error": "Unauthorized",                 
+                }), 404
+        
+        token = jwt.encode(
+                        {"user_id":str(fetched_user.id), "email":fetched_user["email"], "name":fetched_user["name"]},
+                        app.config["SECRET_KEY"],
+                        algorithm="HS256")
+
+        return {
+                "message": " Successfully fetched auth token",
+                "token": token,
+                
+                
+            }, 200    
+    except Exception as e:
+        return {
+            "message": "Something went wrong",
+            "error": str(e),
+            "data": None
+        }, 500
