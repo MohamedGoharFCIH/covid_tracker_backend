@@ -1,7 +1,7 @@
 
 from app import app
 from controller import user
-
+from middlewares.auth_middleware import token_required
 
 @app.route("/signup/", methods=["POST"])
 def add_user():
@@ -16,6 +16,11 @@ def login():
 def getUsers():
     return user.getUsers()
 
+
+@app.route("/user/", methods=["GET"])
+@token_required
+def get_current_user(current_user):
+    return user.get_current_user(current_user)
 
 
 
