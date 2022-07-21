@@ -5,7 +5,6 @@ from flask import Flask, request, jsonify
 from flask_bcrypt import Bcrypt
 from models.user import User
 import jwt
-from middlewares.auth_middleware import token_required
 bcrypt = Bcrypt(app)
 
 def add_user():
@@ -99,6 +98,11 @@ def getUsers():
 
 
 
+def get_current_user(current_user):
+    return jsonify({
+        "message": "successfully retrieved user profile",
+        "data": current_user
+    })
 
 
 
