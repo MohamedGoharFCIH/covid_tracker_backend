@@ -28,6 +28,15 @@ def getPatients(current_user):
 def get_current_user(current_user):
     return user.get_current_user(current_user)
 
+@app.route("/user/", methods=["PUT"])
+@token_required
+def update_current_user(current_user):
+    return user.update_user(current_user, str(current_user.id))
+
+@app.route("/medicines/", methods=["GET"])
+@token_required
+def getMedicines(current_user):
+    return user.getMedicines(current_user)
 
 
 
