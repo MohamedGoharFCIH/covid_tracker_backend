@@ -17,6 +17,11 @@ def getUsers(current_user):
     return user.getUsers(current_user)
 
 
+@app.route("/patients/", methods=["GET"])
+@token_required
+def getPatients(current_user):
+    return user.getpatients(current_user)
+
 
 @app.route("/user/", methods=["GET"])
 @token_required
