@@ -1,9 +1,11 @@
+from datetime import datetime
 from app import app
 import json
 from operator import imod
 from flask import Flask, request, jsonify
 from flask_bcrypt import Bcrypt
 from models.user import User
+from models.medicine import Medicine
 import jwt
 bcrypt = Bcrypt(app)
 
@@ -68,8 +70,7 @@ def login():
 
             app.config["SECRET_KEY"],
             algorithm="HS256")
-
-        return {"message": " Successfully fetched auth token","token": token}, 200    
+        return {"message": " Successfully fetched auth token","user": fetched_user, "token":token}, 200    
     
     except Exception as e:
         return {
