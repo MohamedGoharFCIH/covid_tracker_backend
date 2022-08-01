@@ -81,13 +81,13 @@ def login():
 
 
 
-def getUsers():
+def getUsers(current_user):
+   
+    users =  User.objects()
     try:
-        users =  User.objects()
-        users_count = User.objects.count()
         return {
             "users": users,
-            "count": users_count,
+            "count": len(users),
             "message":" users data fetched successfully"
         },200
     except Exception as e:
