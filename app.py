@@ -95,6 +95,23 @@ admin.add_link(MenuLink(name='logout', category='', url='/adminlogout'))
 
 from routes import users
 from routes import doctors
+
+@app.before_first_request
+def seed_admin():
+    # seed admin data for test admin dashboard
+    admin_email = os.environ.get('ADMIN_EMAIL')
+    admin_name = os.environ.get('ADMIN_NAME')
+    admin_password = os.environ.get('ADMIN_PASSWORD')
+    found_admin = Doctor.objects(email=admin_email).first()
+    if(found_admin) : 
+        print("admin data found")
+    else : 
+        doctor = Doctor(name=admin_name, email=admin_email, password=admin_password)
+        doctor.save()
+        print("admin created")
+
+    
+
 if __name__ == "__main__":
 
     app.run(debug=True)
